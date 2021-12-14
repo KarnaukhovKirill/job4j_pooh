@@ -11,8 +11,6 @@ import java.util.concurrent.Executors;
 
 public class PoohServer {
     private final HashMap<String, Service> modes = new HashMap<>();
-    public final static String HTTP_STATUS_OK = "200 OK";
-    public final static String HTTP_STATUS_NO_CONTENT = "204 NO CONTENT";
 
     public void start() {
         modes.put("queue", new QueueService());

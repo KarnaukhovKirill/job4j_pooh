@@ -2,8 +2,6 @@ package ru.job4j.pooh;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import static ru.job4j.pooh.PoohServer.HTTP_STATUS_NO_CONTENT;
-import static ru.job4j.pooh.PoohServer.HTTP_STATUS_OK;
 
 public class TopicService implements Service {
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>>> topics
@@ -12,11 +10,11 @@ public class TopicService implements Service {
     public Resp process(Req req) {
         if ("GET".equals(req.httpRequestType())) {
             return methodGet(req);
-        }
-        if ("POST".equals(req.httpRequestType())) {
+        } else if ("POST".equals(req.httpRequestType())) {
             return methodPost(req);
+        } else {
+            return new Resp("", HttpStatuses.HTTP_STATUS_NOT_ALLOWED.getStatus());
         }
-        return new Resp("Тип запроса неизвестен", HTTP_STATUS_NO_CONTENT);
     }
 
     private Resp methodGet(Req req) {
@@ -25,9 +23,9 @@ public class TopicService implements Service {
         var linkedQueue = topics.get(req.getSourceName()).get(req.getParam());
         var text = linkedQueue.poll();
         if (text == null) {
-            return new Resp("", HTTP_STATUS_NO_CONTENT);
+            return new Resp("", HttpStatuses.HTTP_STATUS_NO_CONTENT.getStatus());
         }
-        return new Resp(text, HTTP_STATUS_OK);
+        return new Resp(text, HttpStatuses.HTTP_STATUS_OK.getStatus());
     }
 
     private Resp methodPost(Req req) {
@@ -36,6 +34,6 @@ public class TopicService implements Service {
                 queue.add(req.getParam());
             }
         }
-        return new Resp("", HTTP_STATUS_OK);
+        return new Resp("", HttpStatuses.HTTP_STATUS_OK.getStatus());
     }
 }
