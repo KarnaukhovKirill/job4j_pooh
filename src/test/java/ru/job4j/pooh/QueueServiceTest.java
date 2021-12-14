@@ -39,6 +39,7 @@ public class QueueServiceTest {
         Resp result = queueService.process(
                 new Req("LET", "queue", "weather", null)
         );
-        assertThat(result.text(), is("Тип запроса неизвестен"));
+        assertThat(result.text(), is(""));
+        assertThat(result.status(), is("405 METHOD NOT ALLOWED"));
     }
 }

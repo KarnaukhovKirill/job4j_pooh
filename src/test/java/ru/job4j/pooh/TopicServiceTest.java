@@ -36,6 +36,7 @@ public class TopicServiceTest {
         var rsl = topicService.process(
                 new Req("LET", "topic", "weather", paramForPublisher)
         );
-        assertThat(rsl.text(), is("Тип запроса неизвестен"));
+        assertThat(rsl.text(), is(""));
+        assertThat(rsl.status(), is("405 METHOD NOT ALLOWED"));
     }
 }
